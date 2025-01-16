@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Commerce{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'cart_detail' %}">Cart</a></li>
+                {% if user.is_authenticated %}
+                    <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Content specific to the page will go here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 E-Commerce, All rights reserved.</p>
+    </footer>
+</body>
+</html>

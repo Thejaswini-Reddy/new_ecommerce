@@ -1,0 +1,25 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Your Cart - E-Commerce{% endblock %}
+
+{% block content %}
+    <h1>Your Cart</h1>
+    {% if cart %}
+        <ul>
+            {% for item in cart.cartitem_set.all %}
+            <li>
+                {{ item.product.name }} - {{ item.quantity }} x ${{ item.product.price }} = ${{ item.get_total_price }}
+                <form action="{% url 'remove_from_cart' item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+            {% empty %}
+            <li>Your cart is empty.</li>
+            {% endfor %}
+        </ul>
+        <p>Total Price: ${{ cart.get_total_price }}</p>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+{% endblock %}

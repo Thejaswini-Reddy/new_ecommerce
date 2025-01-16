@@ -1,0 +1,40 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Home - E-Commerce{% endblock %}
+
+{% block content %}
+    <h1>Our Products</h1>
+    
+    <!-- Search Bar -->
+    <form method="get" action="{% url 'home' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search products..." />
+        <button type="submit">Search</button>
+    </form>
+    
+    <!-- Category Filter -->
+    <form method="get" action="{% url 'home' %}">
+        <select name="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    
+    <ul>
+        {% for product in products %}
+        <li>
+            <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a> - ${{ product.price }}
+            <form action="{% url 'add_to_cart' product.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Add to Cart</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>No products available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
